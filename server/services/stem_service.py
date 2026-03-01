@@ -28,7 +28,7 @@ from __future__ import annotations
 
 import asyncio
 import time
-from enum import Enum
+from enum import StrEnum
 from typing import Any, Protocol
 from urllib.parse import urlparse
 
@@ -45,7 +45,6 @@ from server.schemas.outputs import (
 )
 from server.utils.config import Settings
 from server.utils.url_validator import UrlValidator
-
 
 # ---------------------------------------------------------------------------
 # Audio fetcher protocol (injectable for testing)
@@ -77,7 +76,7 @@ class AudioFetcherProtocol(Protocol):
 # ---------------------------------------------------------------------------
 
 
-class _ReadyCriteria(str, Enum):
+class _ReadyCriteria(StrEnum):
     """Defines what task output to wait for before returning."""
 
     STEMS = "stems"

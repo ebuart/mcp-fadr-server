@@ -41,7 +41,7 @@ class SuccessResponse(BaseModel):
     model_config = {"extra": "forbid"}
 
     @model_validator(mode="after")
-    def _success_must_be_true(self) -> "SuccessResponse":
+    def _success_must_be_true(self) -> SuccessResponse:
         if not self.success:
             raise ValueError("SuccessResponse.success must be True")
         return self
@@ -57,7 +57,7 @@ class ErrorResponse(BaseModel):
     model_config = {"extra": "forbid"}
 
     @model_validator(mode="after")
-    def _success_must_be_false(self) -> "ErrorResponse":
+    def _success_must_be_false(self) -> ErrorResponse:
         if self.success:
             raise ValueError("ErrorResponse.success must be False")
         return self
@@ -74,4 +74,5 @@ def make_error(
     details: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Return a serialised error envelope."""
-    return ErrorResponse(error=ErrorDetail(code=code, message=message, details=details)).model_dump()
+    detail = ErrorDetail(code=code, message=message, details=details)
+    return ErrorResponse(error=detail).model_dump()

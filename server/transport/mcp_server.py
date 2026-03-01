@@ -64,7 +64,8 @@ def create_mcp_app(service: StemService) -> FastMCP:
         audio_url: Annotated[str, _AUDIO_URL_DESCRIPTION],
         quality: Annotated[
             Literal["preview", "hqPreview", "download"],
-            "Download quality: 'preview'=medium MP3, 'hqPreview'=high-quality MP3 (default), 'download'=lossless WAV.",
+            "Download quality: 'preview'=medium MP3, 'hqPreview'=high-quality MP3 (default),"
+            " 'download'=lossless WAV.",
         ] = "hqPreview",
     ) -> str:
         result = await handle_separate_stems(audio_url, quality, service)

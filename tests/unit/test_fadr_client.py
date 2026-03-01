@@ -67,7 +67,9 @@ def _make_client(mock_response: MagicMock, *, max_retries: int = 0) -> FadrHttpC
 
 class TestGetUploadUrl:
     async def test_success_returns_upload_url_response(self) -> None:
-        resp = _mock_response(json_data={"url": "https://s3.example.com/put", "s3Path": "mock/path"})
+        resp = _mock_response(
+            json_data={"url": "https://s3.example.com/put", "s3Path": "mock/path"}
+        )
         client = _make_client(resp)
         result = await client.get_upload_url("song", "mp3")
         assert result.url == "https://s3.example.com/put"
@@ -226,7 +228,9 @@ class TestCreateAsset:
 
 class TestGetAsset:
     async def test_returns_fadr_asset(self) -> None:
-        resp = _mock_response(json_data={"asset": {"_id": "asset-xyz", "name": "vocals", "extension": "mp3"}})
+        resp = _mock_response(
+            json_data={"asset": {"_id": "asset-xyz", "name": "vocals", "extension": "mp3"}}
+        )
         client = _make_client(resp)
         asset = await client.get_asset("asset-xyz")
         assert asset.asset_id == "asset-xyz"
@@ -240,7 +244,10 @@ class TestGetAsset:
 
 class TestCreateStemTask:
     async def test_returns_fadr_task(self) -> None:
-        resp = _mock_response(json_data={"msg": "ok", "task": {"_id": "task-001", "status": {"msg": "processing", "progress": 0, "complete": False}}})
+        task_payload = {
+            "_id": "task-001", "status": {"msg": "processing", "progress": 0, "complete": False}
+        }
+        resp = _mock_response(json_data={"msg": "ok", "task": task_payload})
         client = _make_client(resp)
         task = await client.create_stem_task("asset-abc")
         assert task.task_id == "task-001"
@@ -248,7 +255,10 @@ class TestCreateStemTask:
         assert task.status.msg == "processing"
 
     async def test_sends_correct_body(self) -> None:
-        resp = _mock_response(json_data={"msg": "ok", "task": {"_id": "task-002", "status": {"msg": "processing", "progress": 0, "complete": False}}})
+        task_payload = {
+            "_id": "task-002", "status": {"msg": "processing", "progress": 0, "complete": False}
+        }
+        resp = _mock_response(json_data={"msg": "ok", "task": task_payload})
         settings = _make_settings()
         mock_http = AsyncMock(spec=httpx.AsyncClient)
         mock_http.request.return_value = resp
@@ -318,7 +328,10 @@ class TestRetryBehaviour:
         assert result.url == "https://x.com"
 
     async def test_network_error_then_succeeds(self) -> None:
-        resp_200 = _mock_response(json_data={"msg": "ok", "task": {"_id": "t-1", "status": {"msg": "processing", "progress": 0, "complete": False}}})
+        task_payload = {
+            "_id": "t-1", "status": {"msg": "processing", "progress": 0, "complete": False}
+        }
+        resp_200 = _mock_response(json_data={"msg": "ok", "task": task_payload})
         settings = _make_settings(fadr_max_retries=2)
         mock_http = AsyncMock(spec=httpx.AsyncClient)
         mock_http.request.side_effect = [

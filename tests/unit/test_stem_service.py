@@ -14,12 +14,11 @@ from server.clients.mock_client import (
     build_done_task,
 )
 from server.exceptions import TaskFailedError, TaskTimeoutError, UrlValidationError
-from server.schemas.fadr_responses import FadrTask, FadrTaskAsset
+from server.schemas.fadr_responses import FadrTask
 from server.services.stem_service import StemService
 from server.utils.config import Settings
 from tests.conftest import MIDI_IDS, MIDI_NAMES, STEM_IDS, STEM_NAMES
 from tests.helpers import FailingAudioFetcher, MockAudioFetcher, PermissiveUrlValidator
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -50,8 +49,10 @@ def _make_service(
 
 
 def _default_assets() -> dict:  # type: ignore[type-arg]
-    stem = {sid: build_asset(sid, name) for sid, name in zip(STEM_IDS, STEM_NAMES)}
-    midi = {mid: build_asset(mid, name, "mid") for mid, name in zip(MIDI_IDS, MIDI_NAMES)}
+    stem = {sid: build_asset(sid, name) for sid, name in zip(STEM_IDS, STEM_NAMES, strict=False)}
+    midi = {
+        mid: build_asset(mid, name, "mid") for mid, name in zip(MIDI_IDS, MIDI_NAMES, strict=False)
+    }
     return {**stem, **midi}
 
 
@@ -253,7 +254,9 @@ class TestPolling:
 
         # Build a task that is never complete (status.complete=False) so polling times out
         from server.schemas.fadr_responses import FadrTask as _FadrTask
-        stuck_task = _FadrTask(**{"_id": "stuck-id", "status": {"complete": False, "msg": "processing"}, "asset": None})
+        stuck_task = _FadrTask(
+            **{"_id": "stuck-id", "status": {"complete": False, "msg": "processing"}, "asset": None}
+        )
 
         client = MockFadrClient(
             final_task=stuck_task,
@@ -273,7 +276,9 @@ class TestPolling:
         """TaskFailedError raised when task completes with no stems (failed output)."""
         assets = _default_assets()
         # complete=True but asset=None → "complete but no expected output" → TaskFailedError
-        failed_task = FadrTask(**{"_id": "fail-id", "status": {"complete": True, "msg": "failed"}, "asset": None})
+        failed_task = FadrTask(
+            **{"_id": "fail-id", "status": {"complete": True, "msg": "failed"}, "asset": None}
+        )
         client = MockFadrClient(
             final_task=failed_task,
             assets=assets,

@@ -44,12 +44,15 @@ MIDI_NAMES = ["vocals", "bass", "melodies", "chord_progression"]
 
 @pytest.fixture
 def stem_assets() -> dict[str, FadrAsset]:
-    return {sid: build_asset(sid, name) for sid, name in zip(STEM_IDS, STEM_NAMES)}
+    return {sid: build_asset(sid, name) for sid, name in zip(STEM_IDS, STEM_NAMES, strict=False)}
 
 
 @pytest.fixture
 def midi_assets() -> dict[str, FadrAsset]:
-    return {mid: build_asset(mid, name, extension="mid") for mid, name in zip(MIDI_IDS, MIDI_NAMES)}
+    return {
+        mid: build_asset(mid, name, extension="mid")
+        for mid, name in zip(MIDI_IDS, MIDI_NAMES, strict=False)
+    }
 
 
 @pytest.fixture

@@ -24,7 +24,6 @@ from server.utils.config import Settings
 from tests.conftest import MIDI_IDS, MIDI_NAMES, STEM_IDS, STEM_NAMES
 from tests.helpers import FailingAudioFetcher, MockAudioFetcher, PermissiveUrlValidator
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -41,8 +40,10 @@ def _make_settings() -> Settings:
 
 
 def _make_assets() -> dict:  # type: ignore[type-arg]
-    stem = {sid: build_asset(sid, name) for sid, name in zip(STEM_IDS, STEM_NAMES)}
-    midi = {mid: build_asset(mid, name, "mid") for mid, name in zip(MIDI_IDS, MIDI_NAMES)}
+    stem = {sid: build_asset(sid, name) for sid, name in zip(STEM_IDS, STEM_NAMES, strict=False)}
+    midi = {
+        mid: build_asset(mid, name, "mid") for mid, name in zip(MIDI_IDS, MIDI_NAMES, strict=False)
+    }
     return {**stem, **midi}
 
 
