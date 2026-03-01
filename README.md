@@ -4,7 +4,7 @@
 
 An MCP (Model Context Protocol) server that integrates the [Fadr API](https://fadr.com/docs/api),
 enabling LLMs to separate audio stems, extract MIDI, and analyze chord progressions, key,
-and tempo from audio files — all via natural language tool calls.
+and tempo from audio files via structured MCP tool calls.
 
 ---
 
@@ -76,13 +76,21 @@ The server listens on stdio and is designed to be launched by an MCP host.
 
 ### 4. Claude Desktop Integration
 
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+Claude Desktop does not inherit your shell PATH, so you must use the **absolute path** to the binary.
+
+Find it with:
+
+```bash
+which mcp-fadr
+```
+
+Then add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
 ```json
 {
   "mcpServers": {
     "fadr": {
-      "command": "mcp-fadr",
+      "command": "/absolute/path/to/mcp-fadr",
       "env": {
         "FADR_API_KEY": "your_key_here"
       }
@@ -115,7 +123,7 @@ Restart Claude Desktop. You can now ask Claude to separate stems, extract MIDI, 
   "success": true,
   "data": {
     "job_id": "64f1a2b3c4d5e6f7a8b9c0d1",
-    "processing_time_ms": 18420,
+    "processing_time_ms": 187340,
     "stems": [
       { "name": "vocals",       "url": "https://..." },
       { "name": "bass",         "url": "https://..." },
@@ -229,7 +237,7 @@ Full guide: [docs/development.md](docs/development.md)
 
 ### `TASK_TIMEOUT` error
 
-- Fadr stem tasks can take 20–60 seconds for longer tracks
+- Stem separation typically takes 2–4 minutes; this is normal
 - Increase `FADR_POLL_TIMEOUT_S` (default: 300) if processing very long files
 - Check Fadr's status page for service disruptions
 
@@ -245,7 +253,7 @@ Full guide: [docs/development.md](docs/development.md)
 
 ### High latency
 
-- Fadr stem tasks typically complete in 20–40 seconds
+- Stem separation typically takes 2–4 minutes; this is expected
 - The server polls every `FADR_POLL_INTERVAL_S` (default: 5s); reduce to 3s for faster responses
 - Network latency between the server and Fadr adds overhead
 
