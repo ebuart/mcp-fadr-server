@@ -57,7 +57,7 @@ def create_mcp_app(service: StemService) -> FastMCP:
         description=(
             "Separate an audio track into individual stems (vocals, bass, drums, "
             "melodies, instrumental) using the Fadr AI. Returns presigned download "
-            "URLs for each stem. Processing typically takes 15–30 seconds."
+            "URLs for each stem. Processing typically takes 2–4 minutes."
         ),
     )
     async def separate_stems(
