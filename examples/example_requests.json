@@ -1,0 +1,32 @@
+{
+  "separate_stems": {
+    "tool": "separate_stems",
+    "params": {
+      "audio_url": "https://example.com/my-song.mp3",
+      "quality": "hqPreview"
+    },
+    "notes": "quality defaults to 'hqPreview' if omitted. Use 'download' for lossless WAV stems."
+  },
+  "separate_stems_lossless": {
+    "tool": "separate_stems",
+    "params": {
+      "audio_url": "https://cdn.example.com/tracks/demo-track.wav",
+      "quality": "download"
+    },
+    "notes": "Request lossless WAV stems for production use."
+  },
+  "extract_midi": {
+    "tool": "extract_midi",
+    "params": {
+      "audio_url": "https://example.com/my-song.mp3"
+    },
+    "notes": "Returns MIDI for each stem plus a chord progression MIDI file."
+  },
+  "analyze_music": {
+    "tool": "analyze_music",
+    "params": {
+      "audio_url": "https://example.com/my-song.mp3"
+    },
+    "notes": "Returns key, tempo, time signature, and chord progression."
+  }
+}

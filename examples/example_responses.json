@@ -1,0 +1,116 @@
+{
+  "separate_stems": {
+    "success": true,
+    "data": {
+      "job_id": "64f1a2b3c4d5e6f7a8b9c0d1",
+      "processing_time_ms": 18420,
+      "stems": [
+        {
+          "name": "vocals",
+          "url": "https://storage.fadr.com/signed/vocals-xyz.mp3?token=eyJ..."
+        },
+        {
+          "name": "bass",
+          "url": "https://storage.fadr.com/signed/bass-xyz.mp3?token=eyJ..."
+        },
+        {
+          "name": "drums",
+          "url": "https://storage.fadr.com/signed/drums-xyz.mp3?token=eyJ..."
+        },
+        {
+          "name": "melodies",
+          "url": "https://storage.fadr.com/signed/melodies-xyz.mp3?token=eyJ..."
+        },
+        {
+          "name": "instrumental",
+          "url": "https://storage.fadr.com/signed/instrumental-xyz.mp3?token=eyJ..."
+        }
+      ]
+    },
+    "error": null
+  },
+  "extract_midi": {
+    "success": true,
+    "data": {
+      "job_id": "64f1a2b3c4d5e6f7a8b9c0d2",
+      "processing_time_ms": 22100,
+      "midi_files": [
+        {
+          "name": "vocals",
+          "url": "https://storage.fadr.com/signed/vocals-midi.mid?token=eyJ..."
+        },
+        {
+          "name": "bass",
+          "url": "https://storage.fadr.com/signed/bass-midi.mid?token=eyJ..."
+        },
+        {
+          "name": "melodies",
+          "url": "https://storage.fadr.com/signed/melodies-midi.mid?token=eyJ..."
+        },
+        {
+          "name": "chord_progression",
+          "url": "https://storage.fadr.com/signed/chords-midi.mid?token=eyJ..."
+        }
+      ],
+      "metadata": {
+        "sample_rate": 44100,
+        "beat_grid": []
+      }
+    },
+    "error": null
+  },
+  "analyze_music": {
+    "success": true,
+    "data": {
+      "job_id": "64f1a2b3c4d5e6f7a8b9c0d3",
+      "processing_time_ms": 19850,
+      "key": "A minor",
+      "tempo_bpm": 128.0,
+      "time_signature": "4/4",
+      "chord_progression": [
+        { "chord": "Am",  "start_beat": 1,  "duration_beats": 4 },
+        { "chord": "F",   "start_beat": 5,  "duration_beats": 4 },
+        { "chord": "C",   "start_beat": 9,  "duration_beats": 4 },
+        { "chord": "G",   "start_beat": 13, "duration_beats": 4 }
+      ]
+    },
+    "error": null
+  },
+  "error_invalid_url": {
+    "success": false,
+    "data": null,
+    "error": {
+      "code": "INVALID_URL",
+      "message": "URL scheme 'http' is not allowed.",
+      "details": {
+        "field": "audio_url",
+        "issue": "invalid_scheme",
+        "allowed": ["https"]
+      }
+    }
+  },
+  "error_task_timeout": {
+    "success": false,
+    "data": null,
+    "error": {
+      "code": "TASK_TIMEOUT",
+      "message": "Fadr task 'task-abc' did not complete within 300.0s.",
+      "details": {
+        "task_id": "task-abc",
+        "timeout_s": 300.0
+      }
+    }
+  },
+  "error_downstream": {
+    "success": false,
+    "data": null,
+    "error": {
+      "code": "DOWNSTREAM_ERROR",
+      "message": "Payment required: Fadr billing threshold exceeded. Check your account.",
+      "details": {
+        "status_code": 402,
+        "path": "/assets/analyze/stem"
+      }
+    }
+  }
+}
