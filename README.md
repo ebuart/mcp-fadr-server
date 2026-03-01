@@ -1,6 +1,6 @@
 # mcp-fadr-server
 
-[![CI](https://github.com/<your-org>/mcp-fadr-server/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-org>/mcp-fadr-server/actions/workflows/ci.yml)
+[![CI](https://github.com/ebuart/mcp-fadr-server/actions/workflows/ci.yml/badge.svg)](https://github.com/ebuart/mcp-fadr-server/actions/workflows/ci.yml)
 
 An MCP (Model Context Protocol) server that integrates the [Fadr API](https://fadr.com/docs/api),
 enabling LLMs to separate audio stems, extract MIDI, and analyze chord progressions, key,
@@ -51,7 +51,7 @@ See [docs/architecture.md](docs/architecture.md) for the full layer diagram and 
 ### 1. Install
 
 ```bash
-git clone https://github.com/<your-org>/mcp-fadr-server.git
+git clone https://github.com/ebuart/mcp-fadr-server.git
 cd mcp-fadr-server
 
 python -m venv .venv && source .venv/bin/activate
