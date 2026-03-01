@@ -18,7 +18,6 @@ Retry logic:
 from __future__ import annotations
 
 import asyncio
-import logging
 from typing import Any
 
 import httpx
@@ -231,7 +230,7 @@ class FadrHttpClient(FadrClientBase):
         """Map HTTP error status to a typed :class:`FadrApiError`."""
         msg = _STATUS_MESSAGES.get(
             response.status_code,
-            f"Fadr API returned an unexpected error.",
+            "Fadr API returned an unexpected error.",
         )
         _logger.error(
             "Fadr API error response.",

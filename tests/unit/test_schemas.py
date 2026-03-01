@@ -9,12 +9,24 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from server.schemas.envelope import ErrorDetail, ErrorResponse, SuccessResponse, make_error, make_success
+from server.schemas.envelope import (
+    ErrorDetail,
+    ErrorResponse,
+    SuccessResponse,
+    make_error,
+    make_success,
+)
 from server.schemas.fadr_responses import FadrAsset, FadrMetaData, FadrTask, FadrTaskAsset
 from server.schemas.inputs import AnalyzeMusicInput, ExtractMidiInput, SeparateStemsInput
-from server.schemas.outputs import AnalysisResult, ChordEntry, MidiFile, MidiResult, StemFile, StemsResult
+from server.schemas.outputs import (
+    AnalysisResult,
+    ChordEntry,
+    MidiFile,
+    MidiResult,
+    StemFile,
+    StemsResult,
+)
 from server.services.stem_service import _parse_chord_progression
-
 
 # ===========================================================================
 # SeparateStemsInput

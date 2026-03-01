@@ -12,10 +12,9 @@ The StemService is replaced with an AsyncMock so no Fadr client is needed.
 from __future__ import annotations
 
 import json
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import MagicMock
 
 import pytest
-from pydantic import ValidationError
 
 from server.exceptions import FadrApiError, TaskTimeoutError, UrlValidationError
 from server.schemas.outputs import (
@@ -29,7 +28,6 @@ from server.schemas.outputs import (
 from server.tools.analyze_music import handle_analyze_music
 from server.tools.extract_midi import handle_extract_midi
 from server.tools.separate_stems import handle_separate_stems
-
 
 # ---------------------------------------------------------------------------
 # Fixtures: pre-built result objects

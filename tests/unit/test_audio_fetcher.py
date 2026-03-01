@@ -7,16 +7,15 @@ exceptions.
 
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import AsyncIterator
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock
 
 import httpx
 import pytest
 
 from server.clients.http_audio_fetcher import HttpxAudioFetcher
 from server.exceptions import AudioDownloadError
-
 
 # ---------------------------------------------------------------------------
 # Helpers: fake streaming response
