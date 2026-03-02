@@ -192,17 +192,13 @@ class StemService:
 
     async def extract_midi(self, audio_url: str) -> MidiResult:
         """Run the Fadr pipeline and return MIDI file download URLs."""
-        task, processing_time_ms = await self._run_pipeline(
-            audio_url, criteria=_ReadyCriteria.MIDI
-        )
+        task, processing_time_ms = await self._run_pipeline(audio_url, criteria=_ReadyCriteria.MIDI)
         return await self._build_midi_result(task, processing_time_ms)
 
     async def analyze_music(self, audio_url: str) -> AnalysisResult:
         """Run the Fadr pipeline and return key, tempo, and chord analysis."""
         # Analysis metadata is available at the same time as MIDI.
-        task, processing_time_ms = await self._run_pipeline(
-            audio_url, criteria=_ReadyCriteria.MIDI
-        )
+        task, processing_time_ms = await self._run_pipeline(audio_url, criteria=_ReadyCriteria.MIDI)
         return self._build_analysis_result(task, processing_time_ms)
 
     # ------------------------------------------------------------------
@@ -304,9 +300,7 @@ class StemService:
             )
             return StemFile(name=asset.name, url=url)
 
-        stems = list(
-            await asyncio.gather(*[_resolve_stem(sid) for sid in task.asset.stems])
-        )
+        stems = list(await asyncio.gather(*[_resolve_stem(sid) for sid in task.asset.stems]))
         return StemsResult(
             job_id=task.task_id,
             processing_time_ms=processing_time_ms,
@@ -332,9 +326,7 @@ class StemService:
             )
             return MidiFile(name=asset.name, url=url)
 
-        midi_files = list(
-            await asyncio.gather(*[_resolve_midi(mid) for mid in task.asset.midi])
-        )
+        midi_files = list(await asyncio.gather(*[_resolve_midi(mid) for mid in task.asset.midi]))
 
         # Include any extra metadata (sample_rate, beat_grid) if present
         extra_meta: dict[str, Any] | None = None

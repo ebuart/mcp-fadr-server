@@ -48,4 +48,4 @@ class Settings(BaseSettings):
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
     """Return the singleton Settings instance (cached after first call)."""
-    return Settings()
+    return Settings()  # type: ignore[call-arg]

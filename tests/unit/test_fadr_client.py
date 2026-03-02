@@ -245,7 +245,8 @@ class TestGetAsset:
 class TestCreateStemTask:
     async def test_returns_fadr_task(self) -> None:
         task_payload = {
-            "_id": "task-001", "status": {"msg": "processing", "progress": 0, "complete": False}
+            "_id": "task-001",
+            "status": {"msg": "processing", "progress": 0, "complete": False},
         }
         resp = _mock_response(json_data={"msg": "ok", "task": task_payload})
         client = _make_client(resp)
@@ -256,7 +257,8 @@ class TestCreateStemTask:
 
     async def test_sends_correct_body(self) -> None:
         task_payload = {
-            "_id": "task-002", "status": {"msg": "processing", "progress": 0, "complete": False}
+            "_id": "task-002",
+            "status": {"msg": "processing", "progress": 0, "complete": False},
         }
         resp = _mock_response(json_data={"msg": "ok", "task": task_payload})
         settings = _make_settings()
@@ -276,6 +278,7 @@ class TestCreateStemTask:
 class TestGetTask:
     async def test_returns_fadr_task(self) -> None:
         from server.schemas.fadr_responses import FadrTaskAsset
+
         resp = _mock_response(
             json_data={
                 "task": {
@@ -329,7 +332,8 @@ class TestRetryBehaviour:
 
     async def test_network_error_then_succeeds(self) -> None:
         task_payload = {
-            "_id": "t-1", "status": {"msg": "processing", "progress": 0, "complete": False}
+            "_id": "t-1",
+            "status": {"msg": "processing", "progress": 0, "complete": False},
         }
         resp_200 = _mock_response(json_data={"msg": "ok", "task": task_payload})
         settings = _make_settings(fadr_max_retries=2)

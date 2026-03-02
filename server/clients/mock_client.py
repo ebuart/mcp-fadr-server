@@ -118,8 +118,8 @@ class MockFadrClient(FadrClientBase):
         group: str | None = None,
     ) -> FadrAsset:
         self.create_asset_calls += 1
-        return FadrAsset(
-            **{"_id": _MOCK_SOURCE_ASSET_ID, "name": name, "extension": extension}
+        return FadrAsset.model_validate(
+            {"_id": _MOCK_SOURCE_ASSET_ID, "name": name, "extension": extension}
         )
 
     async def get_asset(self, asset_id: str) -> FadrAsset:
@@ -146,8 +146,8 @@ class MockFadrClient(FadrClientBase):
             raise self._raise_on_create_task
         # Return a minimal "processing" reference — just enough for the service
         # to obtain the task_id and start polling.
-        return FadrTask(
-            **{
+        return FadrTask.model_validate(
+            {
                 "_id": _MOCK_TASK_ID,
                 "status": FadrTaskStatus(complete=False, msg="processing"),
                 "asset": None,
@@ -159,8 +159,8 @@ class MockFadrClient(FadrClientBase):
         try:
             msg = next(self._status_iter)
             # Return an in-progress task (no results yet)
-            return FadrTask(
-                **{
+            return FadrTask.model_validate(
+                {
                     "_id": task_id,
                     "status": FadrTaskStatus(complete=False, msg=msg),
                     "asset": None,
@@ -193,8 +193,8 @@ def build_done_task(
         chordProgression=chord_progression,
         timeSignature=time_signature,
     )
-    task_asset = FadrTaskAsset(
-        **{
+    task_asset = FadrTaskAsset.model_validate(
+        {
             "_id": _MOCK_SOURCE_ASSET_ID,
             "name": "test-song",
             "extension": "mp3",
@@ -203,8 +203,8 @@ def build_done_task(
             "metaData": meta.model_dump(by_alias=True),
         }
     )
-    return FadrTask(
-        **{
+    return FadrTask.model_validate(
+        {
             "_id": _MOCK_TASK_ID,
             "status": FadrTaskStatus(complete=True, msg="done", progress=100),
             "asset": task_asset,
@@ -214,4 +214,4 @@ def build_done_task(
 
 def build_asset(asset_id: str, name: str, extension: str = "mp3") -> FadrAsset:
     """Build a minimal FadrAsset fixture."""
-    return FadrAsset(**{"_id": asset_id, "name": name, "extension": extension})
+    return FadrAsset.model_validate({"_id": asset_id, "name": name, "extension": extension})

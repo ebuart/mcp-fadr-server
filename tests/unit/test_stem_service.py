@@ -73,36 +73,26 @@ def _default_task() -> FadrTask:
 
 
 class TestSeparateStems:
-    async def test_returns_correct_stem_count(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_returns_correct_stem_count(self, stem_service: StemService) -> None:
         result = await stem_service.separate_stems("https://example.com/song.mp3")
         assert len(result.stems) == len(STEM_IDS)
 
-    async def test_stem_names_match_assets(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_stem_names_match_assets(self, stem_service: StemService) -> None:
         result = await stem_service.separate_stems("https://example.com/song.mp3")
         names = {s.name for s in result.stems}
         assert names == set(STEM_NAMES)
 
-    async def test_stem_urls_contain_asset_ids(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_stem_urls_contain_asset_ids(self, stem_service: StemService) -> None:
         result = await stem_service.separate_stems("https://example.com/song.mp3")
         for stem in result.stems:
             # Mock download URL template: "https://mock-cdn.example.com/download/{asset_id}?..."
             assert "mock-cdn.example.com" in stem.url
 
-    async def test_job_id_is_mock_task_id(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_job_id_is_mock_task_id(self, stem_service: StemService) -> None:
         result = await stem_service.separate_stems("https://example.com/song.mp3")
         assert result.job_id == "mock-task-id"
 
-    async def test_processing_time_ms_is_non_negative(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_processing_time_ms_is_non_negative(self, stem_service: StemService) -> None:
         result = await stem_service.separate_stems("https://example.com/song.mp3")
         assert result.processing_time_ms is not None
         assert result.processing_time_ms >= 0
@@ -136,29 +126,21 @@ class TestSeparateStems:
 
 
 class TestExtractMidi:
-    async def test_returns_correct_midi_count(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_returns_correct_midi_count(self, stem_service: StemService) -> None:
         result = await stem_service.extract_midi("https://example.com/song.mp3")
         assert len(result.midi_files) == len(MIDI_IDS)
 
-    async def test_midi_names_match_assets(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_midi_names_match_assets(self, stem_service: StemService) -> None:
         result = await stem_service.extract_midi("https://example.com/song.mp3")
         names = {m.name for m in result.midi_files}
         assert names == set(MIDI_NAMES)
 
-    async def test_midi_urls_contain_quality_download(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_midi_urls_contain_quality_download(self, stem_service: StemService) -> None:
         result = await stem_service.extract_midi("https://example.com/song.mp3")
         for midi in result.midi_files:
             assert "quality=download" in midi.url
 
-    async def test_job_id_present(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_job_id_present(self, stem_service: StemService) -> None:
         result = await stem_service.extract_midi("https://example.com/song.mp3")
         assert result.job_id == "mock-task-id"
 
@@ -169,27 +151,19 @@ class TestExtractMidi:
 
 
 class TestAnalyzeMusic:
-    async def test_returns_correct_key(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_returns_correct_key(self, stem_service: StemService) -> None:
         result = await stem_service.analyze_music("https://example.com/song.mp3")
         assert result.key == "A minor"
 
-    async def test_returns_correct_tempo(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_returns_correct_tempo(self, stem_service: StemService) -> None:
         result = await stem_service.analyze_music("https://example.com/song.mp3")
         assert result.tempo_bpm == 128.0
 
-    async def test_returns_time_signature(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_returns_time_signature(self, stem_service: StemService) -> None:
         result = await stem_service.analyze_music("https://example.com/song.mp3")
         assert result.time_signature == "4/4"
 
-    async def test_chord_progression_parsed_from_csv(
-        self, stem_service: StemService
-    ) -> None:
+    async def test_chord_progression_parsed_from_csv(self, stem_service: StemService) -> None:
         result = await stem_service.analyze_music("https://example.com/song.mp3")
         assert len(result.chord_progression) == 4
         assert result.chord_progression[0].chord == "Am"
@@ -212,18 +186,14 @@ class TestAnalyzeMusic:
             {"chord": "F", "beat": 5, "duration": 4},
         ]
         assets = _default_assets()
-        task = build_done_task(
-            stem_ids=STEM_IDS, midi_ids=MIDI_IDS, chord_progression=raw_chords
-        )
+        task = build_done_task(stem_ids=STEM_IDS, midi_ids=MIDI_IDS, chord_progression=raw_chords)
         service = _make_service(MockFadrClient(final_task=task, assets=assets))
         result = await service.analyze_music("https://example.com/song.mp3")
         assert result.chord_progression[0].start_beat == 1.0
 
     async def test_none_chord_progression_returns_empty(self) -> None:
         assets = _default_assets()
-        task = build_done_task(
-            stem_ids=STEM_IDS, midi_ids=MIDI_IDS, chord_progression=None
-        )
+        task = build_done_task(stem_ids=STEM_IDS, midi_ids=MIDI_IDS, chord_progression=None)
         service = _make_service(MockFadrClient(final_task=task, assets=assets))
         result = await service.analyze_music("https://example.com/song.mp3")
         assert result.chord_progression == []
@@ -254,6 +224,7 @@ class TestPolling:
 
         # Build a task that is never complete (status.complete=False) so polling times out
         from server.schemas.fadr_responses import FadrTask as _FadrTask
+
         stuck_task = _FadrTask(
             **{"_id": "stuck-id", "status": {"complete": False, "msg": "processing"}, "asset": None}
         )

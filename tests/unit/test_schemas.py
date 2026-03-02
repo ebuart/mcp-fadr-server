@@ -163,7 +163,9 @@ class TestMidiResult:
     def test_valid(self) -> None:
         result = MidiResult(
             job_id="abc",
-            midi_files=[MidiFile(name="chord_progression", url="https://cdn.example.com/chords.mid")],
+            midi_files=[
+                MidiFile(name="chord_progression", url="https://cdn.example.com/chords.mid")
+            ],
         )
         assert result.midi_files[0].name == "chord_progression"
 

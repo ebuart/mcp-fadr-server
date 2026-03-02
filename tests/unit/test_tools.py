@@ -134,17 +134,13 @@ class TestSeparateStemsHandler:
         assert result["error"]["code"] == "INVALID_URL"
 
     async def test_task_timeout_returns_error_envelope(self) -> None:
-        svc = _mock_service(
-            separate_stems_result=TaskTimeoutError("task-123", timeout_s=300.0)
-        )
+        svc = _mock_service(separate_stems_result=TaskTimeoutError("task-123", timeout_s=300.0))
         result = await handle_separate_stems(_VALID_URL, "hqPreview", svc)
         assert result["success"] is False
         assert result["error"]["code"] == "TASK_TIMEOUT"
 
     async def test_fadr_api_error_returns_error_envelope(self) -> None:
-        svc = _mock_service(
-            separate_stems_result=FadrApiError("api down", status_code=503)
-        )
+        svc = _mock_service(separate_stems_result=FadrApiError("api down", status_code=503))
         result = await handle_separate_stems(_VALID_URL, "hqPreview", svc)
         assert result["success"] is False
         assert result["error"]["code"] == "DOWNSTREAM_ERROR"
@@ -183,9 +179,7 @@ class TestExtractMidiHandler:
         assert result["error"]["code"] == "INVALID_INPUT"
 
     async def test_url_validation_error_propagates(self) -> None:
-        svc = _mock_service(
-            extract_midi_result=UrlValidationError("private IP", details=None)
-        )
+        svc = _mock_service(extract_midi_result=UrlValidationError("private IP", details=None))
         result = await handle_extract_midi(_VALID_URL, svc)
         assert result["error"]["code"] == "INVALID_URL"
 
@@ -218,9 +212,7 @@ class TestAnalyzeMusicHandler:
         assert result["error"]["code"] == "INVALID_INPUT"
 
     async def test_fadr_api_error_propagates(self) -> None:
-        svc = _mock_service(
-            analyze_music_result=FadrApiError("rate limited", status_code=429)
-        )
+        svc = _mock_service(analyze_music_result=FadrApiError("rate limited", status_code=429))
         result = await handle_analyze_music(_VALID_URL, svc)
         assert result["error"]["code"] == "DOWNSTREAM_ERROR"
 

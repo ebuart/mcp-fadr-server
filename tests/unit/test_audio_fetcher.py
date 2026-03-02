@@ -36,7 +36,7 @@ def _make_stream_response(
     resp.headers = headers or {"content-type": "audio/mpeg"}
 
     async def _aiter_bytes(chunk_size: int = 65536) -> AsyncIterator[bytes]:
-        for chunk in (chunks or [b"fake-audio-data"]):
+        for chunk in chunks or [b"fake-audio-data"]:
             yield chunk
 
     resp.aiter_bytes = _aiter_bytes

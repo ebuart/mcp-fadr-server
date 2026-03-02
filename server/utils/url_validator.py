@@ -22,9 +22,7 @@ from server.exceptions import UrlValidationError
 # Constants
 # ---------------------------------------------------------------------------
 
-SUPPORTED_AUDIO_EXTENSIONS: frozenset[str] = frozenset(
-    {"mp3", "wav", "aac", "flac", "ogg", "m4a"}
-)
+SUPPORTED_AUDIO_EXTENSIONS: frozenset[str] = frozenset({"mp3", "wav", "aac", "flac", "ogg", "m4a"})
 
 _PRIVATE_NETWORKS: list[ipaddress.IPv4Network | ipaddress.IPv6Network] = [
     ipaddress.IPv4Network("127.0.0.0/8"),

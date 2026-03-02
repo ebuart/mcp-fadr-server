@@ -66,11 +66,7 @@ class HttpxAudioFetcher:
                             details={"declared_bytes": declared_size, "max_bytes": max_bytes},
                         )
 
-                mime_type = (
-                    response.headers.get("content-type", "audio/mpeg")
-                    .split(";")[0]
-                    .strip()
-                )
+                mime_type = response.headers.get("content-type", "audio/mpeg").split(";")[0].strip()
 
                 chunks: list[bytes] = []
                 total = 0

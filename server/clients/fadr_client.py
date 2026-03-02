@@ -18,7 +18,7 @@ Retry logic:
 from __future__ import annotations
 
 import asyncio
-from typing import Any
+from typing import Any, cast
 
 import httpx
 
@@ -102,7 +102,7 @@ class FadrHttpClient(FadrClientBase):
         if isinstance(data, dict):
             url = data.get("url")
             if url and isinstance(url, str):
-                return url
+                return cast(str, url)
         if isinstance(data, str):
             return data
         raise FadrApiError(
